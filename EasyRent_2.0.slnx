@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="EasyRent.Api/EasyRent.Api.csproj" />
+  <Project Path="EasyRent.Domain/EasyRent.Domain.csproj" />
+  <Project Path="EasyRent.Infrastructure/EasyRent.Infrastructure.csproj" />
+</Solution>
