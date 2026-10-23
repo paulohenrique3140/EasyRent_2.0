@@ -8,7 +8,7 @@ function App() {
   const [cnh, setCnh] = useState("");
   const [isRideshareDriver, setIsRideshareDriver] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const client = {
@@ -20,7 +20,15 @@ function App() {
       isRideshareDriver,
     };
 
-    console.log("Client data:", client);
+    const response = await fetch("https://localhost:7156/api/clients", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(client),
+    });
+
+    console.log("API response:", response.status);
   }
 
   return (
