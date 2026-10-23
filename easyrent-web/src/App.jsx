@@ -10,7 +10,17 @@ function App() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("Registering client:", name);
+
+    const client = {
+      name,
+      email,
+      phone,
+      cpf,
+      cnh,
+      isRideshareDriver,
+    };
+
+    console.log("Client data:", client);
   }
 
   return (
