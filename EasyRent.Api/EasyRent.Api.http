@@ -1,6 +1,15 @@
 @EasyRent.Api_HostAddress = http://localhost:5262
 
-GET {{EasyRent.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{EasyRent.Api_HostAddress}}/api/clients
+Content-Type: application/json
+
+{
+  "name": "João Silva",
+  "email": "joao@email.com",
+  "phone": "11999999999",
+  "cpf": "12345678901",
+  "cnh": "123456789",
+  "isRideshareDriver": false
+}
 
 ###

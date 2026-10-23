@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using EasyRent.Domain.Entities;
 
+namespace EasyRent.Infrastructure.Repositories;
+
 public class ClientRepository
 {
     private readonly string connectionString = "Server=PAULO;DataBase=EASY_RENT_2;Integrated Security=True;TrustServerCertificate=True;";
