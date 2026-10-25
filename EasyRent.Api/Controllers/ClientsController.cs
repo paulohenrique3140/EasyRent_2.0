@@ -23,4 +23,15 @@ public class ClientsController : ControllerBase
         List<Client> clients = _clientRepository.GetAllClients();
         return Ok(clients);
     }
+
+    [HttpGet("{id}")]
+    public IActionResult GetClient(int id)
+    {
+        Client? client = _clientRepository.GetClient(id);
+        if (client == null)
+        {
+            return NotFound();
+        }
+        return Ok(client);
+    }
 }

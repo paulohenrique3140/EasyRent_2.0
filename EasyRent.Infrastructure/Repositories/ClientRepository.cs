@@ -55,4 +55,31 @@ public class ClientRepository
 
         return clients;
     }
+    public Client? GetClient(int id)
+    {
+        using SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver
+                        FROM Client WHERE Id = @Id";
+
+        using SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", id);
+        using SqlDataReader reader = command.ExecuteReader();
+        if (reader.Read())
+        {
+            Client client = new Client(
+                reader["Name"].ToString()!,
+                reader["Email"].ToString()!,
+                reader["Phone"].ToString()!,
+                reader["CPF"].ToString()!,
+                reader["CNH"].ToString()!,
+                Convert.ToBoolean(reader["IsRideshareDriver"])
+                );
+            client.Id = Convert.ToInt32(reader["Id"]);
+            return client;
+        }
+        return null;        
+    }
 }
+

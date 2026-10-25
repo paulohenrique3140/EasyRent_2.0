@@ -8,6 +8,8 @@ function App() {
   const [cnh, setCnh] = useState("");
   const [isRideshareDriver, setIsRideshareDriver] = useState(false);
   const [clients, setClients] = useState([]);
+  const [client, setClient] = useState(null);
+  const [clientId, setClientId] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -32,6 +34,7 @@ function App() {
 
       if (response.ok) {
         console.log("client registered successfully");
+        await getAllClients();
       } else {
         console.log("Failed to register client");
       }
@@ -57,6 +60,25 @@ function App() {
   useEffect(() => {
     getAllClients();
   }, []);
+
+  async function getClientById(id) {
+    setClient(null);
+    try {
+      const response = await fetch(`https://localhost:7156/api/clients/${id}`);
+
+      if (response.ok) {
+        const data = await response.json();
+        setClient(data);
+        console.log(data);
+      } else if (response.status === 404) {
+        console.log("Client not found");
+      } else {
+        console.log("Error fetching client.");
+      }
+    } catch (error) {
+      console.error("Error fetching client by ID:", error);
+    }
+  }
 
   return (
     <div>
@@ -140,6 +162,28 @@ function App() {
             </li>
           ))}
         </ul>
+      </div>
+      <div>
+        <h2>Get Client by ID</h2>
+        <input
+          type="number"
+          placeholder="Enter client ID"
+          value={clientId}
+          onChange={(event) => setClientId(event.target.value)}
+        />
+        <button onClick={() => getClientById(clientId)}>Search</button>
+
+        {client && (
+          <div>
+            <h3>Client Details</h3>
+            <p>Name: {client.name}</p>
+            <p>Email: {client.email}</p>
+            <p>Phone: {client.phone}</p>
+            <p>CPF: {client.cpf}</p>
+            <p>CNH: {client.cnh}</p>
+            <p>Rideshare Driver: {client.isRideshareDriver ? "Yes" : "No"}</p>
+          </div>
+        )}
       </div>
     </div>
   );

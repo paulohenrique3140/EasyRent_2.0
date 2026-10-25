@@ -1,6 +1,6 @@
 @EasyRent.Api_HostAddress = http://localhost:5262
 
-GET {{EasyRent.Api_HostAddress}}/api/clients
+GET {{EasyRent.Api_HostAddress}}/api/clients/1
 Content-Type: application/json
 
 
