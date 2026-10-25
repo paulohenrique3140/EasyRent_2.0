@@ -46,4 +46,15 @@ public class ClientsController : ControllerBase
         }
         return Ok();
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteClient(int id)
+    {
+        bool deleted = _clientRepository.DeleteClient(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+        return Ok();
+    }
 }

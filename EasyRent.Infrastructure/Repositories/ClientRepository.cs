@@ -106,5 +106,17 @@ public class ClientRepository
 
         return command.ExecuteNonQuery() > 0;      
     }
+
+    public bool DeleteClient(int id)
+    {
+        using SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        string query = @"DELETE FROM Client WHERE Id = @Id";
+
+        using SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@Id", id);
+        return command.ExecuteNonQuery() > 0;
+    }
 }
 

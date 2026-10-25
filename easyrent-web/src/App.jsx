@@ -105,6 +105,29 @@ function App() {
     }
   }
 
+  async function deleteClient() {
+    if (!window.confirm("Are you sure you want to delete this client?")) {
+    return;
+  }
+    try {
+      const response = await fetch(
+        `https://localhost:7156/api/clients/${client.id}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      if (response.ok) {
+        console.log("Client deleted successfully");
+        await getAllClients();
+      } else {
+        console.log("Failed to delete client");
+      }
+    } catch (error) {
+      console.error("Error deleting client:", error);
+    }
+  }
+
   return (
     <div>
       <h1>EasyRent 2.0</h1>
@@ -266,6 +289,7 @@ function App() {
               }
             />
             <button type="submit">Update Client</button>
+            <button type="button" onClick={deleteClient}>Delete Client</button>
           </form>
         )}
       </div>
