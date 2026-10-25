@@ -34,4 +34,16 @@ public class ClientsController : ControllerBase
         }
         return Ok(client);
     }
+
+    [HttpPut("{id}")]
+    public IActionResult PutClient(int id, [FromBody] Client client)
+    {
+        client.Id = id;
+        bool updated = _clientRepository.UpdateClient(client);
+        if (!updated)
+        {
+            return NotFound();
+        }
+        return Ok();
+    }
 }

@@ -80,6 +80,31 @@ function App() {
     }
   }
 
+  async function handleUpdate(event) {
+    event.preventDefault();
+    try {
+      const response = await fetch(
+        `https://localhost:7156/api/clients/${client.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(client),
+        },
+      );
+
+      if (response.ok) {
+        console.log("Client updated successfully");
+        await getAllClients();
+      } else {
+        console.log("Failed to update client");
+      }
+    } catch (error) {
+      console.error("Error updating client:", error);
+    }
+  }
+
   return (
     <div>
       <h1>EasyRent 2.0</h1>
@@ -174,15 +199,74 @@ function App() {
         <button onClick={() => getClientById(clientId)}>Search</button>
 
         {client && (
-          <div>
+          <form onSubmit={handleUpdate}>
             <h3>Client Details</h3>
-            <p>Name: {client.name}</p>
-            <p>Email: {client.email}</p>
-            <p>Phone: {client.phone}</p>
-            <p>CPF: {client.cpf}</p>
-            <p>CNH: {client.cnh}</p>
-            <p>Rideshare Driver: {client.isRideshareDriver ? "Yes" : "No"}</p>
-          </div>
+            <label htmlFor="updateName">Name:</label>
+            <input
+              type="text"
+              id="updateName"
+              name="updateName"
+              value={client.name}
+              onChange={(event) =>
+                setClient({ ...client, name: event.target.value })
+              }
+            />
+            <br />
+            <label htmlFor="updateEmail">Email:</label>
+            <input
+              type="text"
+              id="updateEmail"
+              name="updateEmail"
+              value={client.email}
+              onChange={(event) =>
+                setClient({ ...client, email: event.target.value })
+              }
+            />
+            <label htmlFor="updatePhone">Phone:</label>
+            <input
+              type="text"
+              id="updatePhone"
+              name="updatePhone"
+              value={client.phone}
+              onChange={(event) =>
+                setClient({ ...client, phone: event.target.value })
+              }
+            />
+            <label htmlFor="updateCpf">CPF:</label>
+            <input
+              type="text"
+              id="updateCpf"
+              name="updateCpf"
+              value={client.cpf}
+              onChange={(event) =>
+                setClient({ ...client, cpf: event.target.value })
+              }
+            />
+            <label htmlFor="updateCnh">CNH:</label>
+            <input
+              type="text"
+              id="updateCnh"
+              name="updateCnh"
+              value={client.cnh}
+              onChange={(event) =>
+                setClient({ ...client, cnh: event.target.value })
+              }
+            />
+            <label htmlFor="updateIsRideshareDriver">Rideshare Driver:</label>
+            <input
+              type="checkbox"
+              id="updateIsRideshareDriver"
+              name="updateIsRideshareDriver"
+              checked={client.isRideshareDriver}
+              onChange={(event) =>
+                setClient({
+                  ...client,
+                  isRideshareDriver: event.target.checked,
+                })
+              }
+            />
+            <button type="submit">Update Client</button>
+          </form>
         )}
       </div>
     </div>

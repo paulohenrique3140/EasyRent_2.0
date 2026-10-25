@@ -81,5 +81,30 @@ public class ClientRepository
         }
         return null;        
     }
+
+    public bool UpdateClient(Client client)
+    {
+        using SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        string query = @"Update Client SET Name = @Name,
+                         Email = @Email,
+                         Phone = @Phone,
+                         CPF = @CPF,
+                         CNH = @CNH,
+                         IsRideshareDriver = @IsRideshareDriver
+                         WHERE Id = @Id";
+
+        using SqlCommand command = new SqlCommand(query, connection);
+        command.Parameters.AddWithValue("@Name", client.Name);
+        command.Parameters.AddWithValue("@Email", client.Email);
+        command.Parameters.AddWithValue("@Phone", client.Phone);
+        command.Parameters.AddWithValue("@CPF", client.CPF);
+        command.Parameters.AddWithValue("@CNH", client.CNH);
+        command.Parameters.AddWithValue("@IsRideshareDriver", client.IsRideshareDriver);
+        command.Parameters.AddWithValue("@Id", client.Id);
+
+        return command.ExecuteNonQuery() > 0;      
+    }
 }
 
