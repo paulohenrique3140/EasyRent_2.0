@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [name, setName] = useState("");
@@ -7,6 +7,7 @@ function App() {
   const [cpf, setCpf] = useState("");
   const [cnh, setCnh] = useState("");
   const [isRideshareDriver, setIsRideshareDriver] = useState(false);
+  const [clients, setClients] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -20,16 +21,42 @@ function App() {
       isRideshareDriver,
     };
 
-    const response = await fetch("https://localhost:7156/api/clients", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(client),
-    });
+    try {
+      const response = await fetch("https://localhost:7156/api/clients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(client),
+      });
 
-    console.log("API response:", response.status);
+      if (response.ok) {
+        console.log("client registered successfully");
+      } else {
+        console.log("Failed to register client");
+      }
+    } catch (error) {
+      console.error("Request error:", error);
+    }
   }
+
+  async function getAllClients() {
+    try {
+      const response = await fetch("https://localhost:7156/api/clients");
+
+      if (response.ok) {
+        const data = await response.json();
+        setClients(data);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
+  }
+
+  useEffect(() => {
+    getAllClients();
+  }, []);
 
   return (
     <div>
@@ -47,7 +74,6 @@ function App() {
             value={name}
             onChange={(event) => setName(event.target.value)}
           />
-          <p>Typed name: {name}</p>
         </div>
 
         <div>
@@ -59,7 +85,6 @@ function App() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <p>Typed email: {email}</p>
         </div>
 
         <div>
@@ -71,7 +96,6 @@ function App() {
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
           />
-          <p>Typed phone: {phone}</p>
         </div>
 
         <div>
@@ -83,7 +107,6 @@ function App() {
             value={cpf}
             onChange={(event) => setCpf(event.target.value)}
           />
-          <p>Typed CPF: {cpf}</p>
         </div>
 
         <div>
@@ -95,7 +118,6 @@ function App() {
             value={cnh}
             onChange={(event) => setCnh(event.target.value)}
           />
-          <p>Typed CNH: {cnh}</p>
         </div>
 
         <div>
@@ -106,10 +128,19 @@ function App() {
             checked={isRideshareDriver}
             onChange={(event) => setIsRideshareDriver(event.target.checked)}
           />
-          <p>Rideshare Driver: {isRideshareDriver ? "Yes" : "No"}</p>
         </div>
         <button type="submit">Register Client</button>
       </form>
+      <div>
+        <h2>Registered Clients</h2>
+        <ul>
+          {clients.map((client) => (
+            <li key={client.id}>
+              {client.name} - {client.email}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

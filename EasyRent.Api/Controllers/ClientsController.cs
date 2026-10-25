@@ -16,4 +16,11 @@ public class ClientsController : ControllerBase
         int id = _clientRepository.AddClient(client);
         return Ok(id);
     }
+
+    [HttpGet]
+    public IActionResult GetAllClients()
+    {
+        List<Client> clients = _clientRepository.GetAllClients();
+        return Ok(clients);
+    }
 }

@@ -15,7 +15,7 @@ public class ClientRepository
         string query = @"INSERT INTO Client (Name, Email, Phone, CPF, CNH, IsRideshareDriver)
             OUTPUT INSERTED.Id
             VALUES (@Name, @Email, @Phone, @CPF, @CNH, @IsRideshareDriver)";
-        
+
         using SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@Name", client.Name);
         command.Parameters.AddWithValue("@Email", client.Email);
@@ -28,4 +28,31 @@ public class ClientRepository
 
         return id;
     }
-}   
+
+    public List<Client> GetAllClients()
+    {
+        using SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+        List<Client> clients = new List<Client>();
+
+        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver
+                         FROM Client";
+        using SqlCommand command = new SqlCommand(query, connection);
+        using SqlDataReader reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            Client client = new Client(
+                reader["Name"].ToString()!,
+                reader["Email"].ToString()!,
+                reader["Phone"].ToString()!,
+                reader["CPF"].ToString()!,
+                reader["CNH"].ToString()!,
+                Convert.ToBoolean(reader["IsRideshareDriver"])
+                );
+            client.Id = Convert.ToInt32(reader["Id"]);
+            clients.Add(client);
+        }
+
+        return clients;
+    }
+}
