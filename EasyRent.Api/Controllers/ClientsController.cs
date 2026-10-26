@@ -51,9 +51,18 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult PutClient(int id, [FromBody] Client client)
+    public IActionResult PutClient(int id, [FromBody] UpdateClientDto dto)
     {
-        client.Id = id;
+        Client? client = _clientRepository.GetClient(id);
+        if (client == null)
+        {
+            return NotFound();
+        }
+        client.Name = dto.Name;
+        client.Email = dto.Email;
+        client.Phone = dto.Phone;
+        client.IsRideshareDriver = dto.IsRideshareDriver;
+
         bool updated = _clientRepository.UpdateClient(client);
         if (!updated)
         {

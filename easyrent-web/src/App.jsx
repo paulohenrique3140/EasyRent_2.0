@@ -11,6 +11,7 @@ function App() {
   const [client, setClient] = useState(null);
   const [clientId, setClientId] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
+  const [updateValidationErrors, setUpdateValidationErrors] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -71,6 +72,7 @@ function App() {
 
   async function getClientById(id) {
     setClient(null);
+    setUpdateValidationErrors([]);
     try {
       const response = await fetch(`https://localhost:7156/api/clients/${id}`);
 
@@ -90,6 +92,13 @@ function App() {
 
   async function handleUpdate(event) {
     event.preventDefault();
+    const updatedClient = {
+      name: client.name,
+      email: client.email,
+      phone: client.phone,
+      isRideshareDriver: client.isRideshareDriver,
+    };
+
     try {
       const response = await fetch(
         `https://localhost:7156/api/clients/${client.id}`,
@@ -98,13 +107,20 @@ function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(client),
+          body: JSON.stringify(updatedClient),
         },
       );
 
       if (response.ok) {
         console.log("Client updated successfully");
+        setUpdateValidationErrors([]);
         await getAllClients();
+      } else if (response.status === 400) {
+        const data = await response.json();
+
+        const errors = Object.values(data.errors ?? {}).flat();
+
+        setUpdateValidationErrors(errors);
       } else {
         console.log("Failed to update client");
       }
@@ -280,9 +296,7 @@ function App() {
               id="updateCpf"
               name="updateCpf"
               value={client.cpf}
-              onChange={(event) =>
-                setClient({ ...client, cpf: event.target.value })
-              }
+              readOnly
             />
             <label htmlFor="updateCnh">CNH:</label>
             <input
@@ -290,9 +304,7 @@ function App() {
               id="updateCnh"
               name="updateCnh"
               value={client.cnh}
-              onChange={(event) =>
-                setClient({ ...client, cnh: event.target.value })
-              }
+              readOnly
             />
             <label htmlFor="updateIsRideshareDriver">Rideshare Driver:</label>
             <input
@@ -311,6 +323,16 @@ function App() {
             <button type="button" onClick={deleteClient}>
               Delete Client
             </button>
+            {updateValidationErrors.length > 0 && (
+              <div>
+                <h4>Update Validation Errors:</h4>
+                <ul>
+                  {updateValidationErrors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </form>
         )}
       </div>
