@@ -10,6 +10,7 @@ function App() {
   const [clients, setClients] = useState([]);
   const [client, setClient] = useState(null);
   const [clientId, setClientId] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -33,8 +34,15 @@ function App() {
       });
 
       if (response.ok) {
-        console.log("client registered successfully");
+        console.log("Client registered successfully");
+        setValidationErrors([]);
         await getAllClients();
+      } else if (response.status === 400) {
+        const data = await response.json();
+
+        const errors = Object.values(data.errors ?? {}).flat();
+
+        setValidationErrors(errors);
       } else {
         console.log("Failed to register client");
       }
@@ -107,8 +115,8 @@ function App() {
 
   async function deleteClient() {
     if (!window.confirm("Are you sure you want to delete this client?")) {
-    return;
-  }
+      return;
+    }
     try {
       const response = await fetch(
         `https://localhost:7156/api/clients/${client.id}`,
@@ -202,6 +210,16 @@ function App() {
         </div>
         <button type="submit">Register Client</button>
       </form>
+      {validationErrors.length > 0 && (
+        <div>
+          <h4>Validation Errors:</h4>
+          <ul>
+            {validationErrors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div>
         <h2>Registered Clients</h2>
         <ul>
@@ -290,7 +308,9 @@ function App() {
               }
             />
             <button type="submit">Update Client</button>
-            <button type="button" onClick={deleteClient}>Delete Client</button>
+            <button type="button" onClick={deleteClient}>
+              Delete Client
+            </button>
           </form>
         )}
       </div>

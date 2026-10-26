@@ -1,8 +1,16 @@
 @EasyRent.Api_HostAddress = http://localhost:5262
 
-DELETE {{EasyRent.Api_HostAddress}}/api/clients/8
+POST {{EasyRent.Api_HostAddress}}/api/clients
 Content-Type: application/json
 
-
+{
+  "name": "",
+  "email": "email-invalido",
+  "phone": "",
+  "cpf": "",
+  "cnh": "",
+  "isRideshareDriver": false
+}
+  
 
 ###

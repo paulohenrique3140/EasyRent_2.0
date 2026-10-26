@@ -112,7 +112,7 @@ public class ClientRepository
 
         return command.ExecuteNonQuery() > 0;      
     }
-
+     
     public bool DeleteClient(int id)
     {
         using SqlConnection connection = new SqlConnection(connectionString);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EasyRent.Domain.Entities;
 using EasyRent.Infrastructure.Repositories;
+using EasyRent.Api.DTOs;
 
 namespace EasyRent.Api.Controllers;
 
@@ -16,8 +17,17 @@ public class ClientsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddClient([FromBody] Client client)
+    public IActionResult AddClient([FromBody] CreateClientDto dto)
     {
+        Client client = new Client(
+            dto.Name,
+            dto.Email,
+            dto.Phone,
+            dto.CPF,
+            dto.CNH,
+            dto.IsRideshareDriver
+            );
+        
         int id = _clientRepository.AddClient(client);
         return Ok(id);
     }
