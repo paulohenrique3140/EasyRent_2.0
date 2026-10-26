@@ -1,3 +1,5 @@
+using EasyRent.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +17,8 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddScoped<ClientRepository>();
 
 var app = builder.Build();
 

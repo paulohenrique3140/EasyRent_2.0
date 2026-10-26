@@ -119,6 +119,7 @@ function App() {
 
       if (response.ok) {
         console.log("Client deleted successfully");
+        setClient(null);
         await getAllClients();
       } else {
         console.log("Failed to delete client");

@@ -1,11 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
 using EasyRent.Domain.Entities;
+using Microsoft.Extensions.Configuration;
 
 namespace EasyRent.Infrastructure.Repositories;
 
 public class ClientRepository
 {
-    private readonly string connectionString = "Server=PAULO;DataBase=EASY_RENT_2;Integrated Security=True;TrustServerCertificate=True;";
+    private readonly string connectionString;
+
+    public ClientRepository(IConfiguration configuration)
+    {
+        connectionString = configuration.GetConnectionString("EasyRent") ?? throw new InvalidOperationException("Connection string not found");
+    }
 
     public int AddClient(Client client)
     {

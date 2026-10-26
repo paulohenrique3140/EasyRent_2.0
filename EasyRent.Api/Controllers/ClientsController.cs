@@ -8,7 +8,12 @@ namespace EasyRent.Api.Controllers;
 [Route("api/[controller]")]
 public class ClientsController : ControllerBase
 {
-    private readonly ClientRepository _clientRepository = new ClientRepository();
+    private readonly ClientRepository _clientRepository;
+
+    public ClientsController(ClientRepository clientRepository)
+    {
+        _clientRepository = clientRepository;
+    }
 
     [HttpPost]
     public IActionResult AddClient([FromBody] Client client)
