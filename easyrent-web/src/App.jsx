@@ -44,6 +44,9 @@ function App() {
         const errors = Object.values(data.errors ?? {}).flat();
 
         setValidationErrors(errors);
+      } else if (response.status === 409) {
+        const message = await response.text();
+        setValidationErrors([message]);
       } else {
         console.log("Failed to register client");
       }
@@ -121,6 +124,9 @@ function App() {
         const errors = Object.values(data.errors ?? {}).flat();
 
         setUpdateValidationErrors(errors);
+      } else if (response.status === 409) {
+        const message = await response.text();
+        setUpdateValidationErrors([message]);
       } else {
         console.log("Failed to update client");
       }

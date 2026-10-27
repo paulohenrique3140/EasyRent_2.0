@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EasyRent.Api.DTOs;
 using EasyRent.Domain.Entities;
 using EasyRent.Infrastructure.Repositories;
-using EasyRent.Api.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace EasyRent.Api.Controllers;
 
@@ -27,9 +28,16 @@ public class ClientsController : ControllerBase
             dto.CNH,
             dto.IsRideshareDriver
             );
-        
-        int id = _clientRepository.AddClient(client);
-        return Ok(id);
+
+        try
+        {
+            int id = _clientRepository.AddClient(client);
+            return Ok(id);
+        }
+        catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+        {
+            return Conflict("Email, CPF or CNH already registered.");
+        }
     }
 
     [HttpGet]
@@ -89,12 +97,19 @@ public class ClientsController : ControllerBase
         client.Phone = dto.Phone;
         client.IsRideshareDriver = dto.IsRideshareDriver;
 
-        bool updated = _clientRepository.UpdateClient(client);
-        if (!updated)
+        try
         {
-            return NotFound();
+            bool updated = _clientRepository.UpdateClient(client);
+            if (!updated)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
-        return Ok();
+        catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+        {
+            return Conflict("Email already registered.");
+        }
     }
 
     [HttpDelete("{id}")]
