@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [name, setName] = useState("");
@@ -160,83 +161,86 @@ function App() {
   }
 
   return (
-    <div>
-      <h1>EasyRent 2.0</h1>
-      <h2>Client management</h2>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>EasyRent 2.0</h1>
+        <p>Client management</p>
+      </header>
+
       <p>Welcome to our vehicle rental system!</p>
-      <h3>Register new client</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Full Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </div>
 
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </div>
+      <section className="form-card">
+        <h3>Register new client</h3>
+        <form onSubmit={handleSubmit} className="client-form">
+          <div>
+            <label htmlFor="name">Full Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+          </div>
 
-        <div>
-          <label
-            htmlFor="phone"
-          >
-            Phone:
-          </label>
-          <input
-            type="tel"
-            placeholder="Somente números"
-            id="phone"
-            name="phone"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="cpf">CPF:</label>
-          <input
-            type="text"
-            id="cpf"
-            name="cpf"
-            value={cpf}
-            onChange={(event) => setCpf(event.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="phone">Phone:</label>
+            <input
+              type="tel"
+              placeholder="Somente números"
+              id="phone"
+              name="phone"
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="cnh">CNH:</label>
-          <input
-            type="text"
-            id="cnh"
-            name="cnh"
-            value={cnh}
-            onChange={(event) => setCnh(event.target.value)}
-          />
-        </div>
+          <div>
+            <label htmlFor="cpf">CPF:</label>
+            <input
+              type="text"
+              id="cpf"
+              name="cpf"
+              value={cpf}
+              onChange={(event) => setCpf(event.target.value)}
+            />
+          </div>
 
-        <div>
-          <label htmlFor="rideshare">Rideshare Driver:</label>
-          <input
-            type="checkbox"
-            id="rideshare"
-            checked={isRideshareDriver}
-            onChange={(event) => setIsRideshareDriver(event.target.checked)}
-          />
-        </div>
-        <button type="submit">Register Client</button>
-      </form>
+          <div>
+            <label htmlFor="cnh">CNH:</label>
+            <input
+              type="text"
+              id="cnh"
+              name="cnh"
+              value={cnh}
+              onChange={(event) => setCnh(event.target.value)}
+            />
+          </div>
+
+          <div className="checkbox-group">
+            <label htmlFor="rideshare">Rideshare Driver:</label>
+            <input
+              type="checkbox"
+              id="rideshare"
+              checked={isRideshareDriver}
+              onChange={(event) => setIsRideshareDriver(event.target.checked)}
+            />
+          </div>
+          <button type="submit">Register Client</button>
+        </form>
+      </section>
+
       {validationErrors.length > 0 && (
         <div>
           <h4>Validation Errors:</h4>
