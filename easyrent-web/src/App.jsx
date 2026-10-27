@@ -189,9 +189,14 @@ function App() {
         </div>
 
         <div>
-          <label htmlFor="phone">Phone:</label>
+          <label
+            htmlFor="phone"
+          >
+            Phone:
+          </label>
           <input
             type="tel"
+            placeholder="Somente números"
             id="phone"
             name="phone"
             value={phone}

@@ -4,12 +4,12 @@ POST {{EasyRent.Api_HostAddress}}/api/clients
 Content-Type: application/json
   
 {
-    "name": "João Silva",
-    "email": "joao@email.com",
-    "phone": "11999999999",
-    "cpf": "12345678901",
-    "cnh": "123456789",
-    "isRideshareDriver": false
+  "name": "Burgues",
+  "email": "burgues@email.com",
+  "phone": "1122999999",
+  "cpf": "12345543456",
+  "cnh": "32334545678",
+  "isRideshareDriver": true
 }
 
 ###
