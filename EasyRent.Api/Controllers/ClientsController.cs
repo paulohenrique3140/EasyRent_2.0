@@ -36,7 +36,23 @@ public class ClientsController : ControllerBase
     public IActionResult GetAllClients()
     {
         List<Client> clients = _clientRepository.GetAllClients();
-        return Ok(clients);
+        List<ClientResponseDto> responses = new List<ClientResponseDto>();
+
+        foreach (Client c in clients)
+        {
+            ClientResponseDto clientDto = new ClientResponseDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                CPF = c.CPF,
+                CNH = c.CNH,
+                IsRideshareDriver = c.IsRideshareDriver
+            };
+            responses.Add(clientDto);
+        }        
+        return Ok(responses);
     }
 
     [HttpGet("{id}")]
@@ -47,7 +63,17 @@ public class ClientsController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(client);
+        ClientResponseDto response = new ClientResponseDto
+        {
+            Id = client.Id,
+            Name = client.Name,
+            Email = client.Email,
+            Phone = client.Phone,
+            CPF = client.CPF,
+            CNH = client.CNH,
+            IsRideshareDriver = client.IsRideshareDriver
+        };
+        return Ok(response);
     }
 
     [HttpPut("{id}")]

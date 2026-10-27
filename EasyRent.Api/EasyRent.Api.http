@@ -1,16 +1,7 @@
 @EasyRent.Api_HostAddress = http://localhost:5262
 
-PUT {{EasyRent.Api_HostAddress}}/api/clients/2
+GET {{EasyRent.Api_HostAddress}}/api/clients
 Content-Type: application/json
-
-{
-  "name": "Jessica Vieira",
-  "email": "email-invalido",
-  "phone": "",
-  "cpf": "",
-  "cnh": "",
-  "isRideshareDriver": false
-}
   
 
 ###
