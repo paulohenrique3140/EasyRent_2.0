@@ -13,6 +13,7 @@ function App() {
   const [clientId, setClientId] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
   const [updateValidationErrors, setUpdateValidationErrors] = useState([]);
+  const [searchError, setSearchError] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -76,6 +77,7 @@ function App() {
 
   async function getClientById(id) {
     setClient(null);
+    setSearchError("");
     setUpdateValidationErrors([]);
     try {
       const response = await fetch(`https://localhost:7156/api/clients/${id}`);
@@ -85,7 +87,7 @@ function App() {
         setClient(data);
         console.log(data);
       } else if (response.status === 404) {
-        console.log("Client not found");
+        setSearchError("Client not found");
       } else {
         console.log("Error fetching client.");
       }
@@ -198,7 +200,6 @@ function App() {
             <label htmlFor="phone">Phone:</label>
             <input
               type="tel"
-              placeholder="Somente números"
               id="phone"
               name="phone"
               value={phone}
@@ -242,7 +243,7 @@ function App() {
       </section>
 
       {validationErrors.length > 0 && (
-        <div>
+        <div className="validation-alert">
           <h4>Validation Errors:</h4>
           <ul>
             {validationErrors.map((error, index) => (
@@ -251,17 +252,32 @@ function App() {
           </ul>
         </div>
       )}
-      <div>
+
+      <section className="clients-card">
         <h2>Registered Clients</h2>
-        <ul>
-          {clients.map((client) => (
-            <li key={client.id}>
-              {client.name} - {client.email}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
+        <div className="table-wrapper">
+          <table className="clients-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clients.map((client) => (
+                <tr key={client.id}>
+                  <td>{client.id}</td>
+                  <td>{client.name}</td>
+                  <td>{client.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div className="search-card">
         <h2>Get Client by ID</h2>
         <input
           type="number"
@@ -270,76 +286,95 @@ function App() {
           onChange={(event) => setClientId(event.target.value)}
         />
         <button onClick={() => getClientById(clientId)}>Search</button>
+        {searchError && <p className="search-error">⚠️ {searchError}</p>}
 
         {client && (
-          <form onSubmit={handleUpdate}>
+          <form onSubmit={handleUpdate} className="update-form">
             <h3>Client Details</h3>
-            <label htmlFor="updateName">Name:</label>
-            <input
-              type="text"
-              id="updateName"
-              name="updateName"
-              value={client.name}
-              onChange={(event) =>
-                setClient({ ...client, name: event.target.value })
-              }
-            />
-            <br />
-            <label htmlFor="updateEmail">Email:</label>
-            <input
-              type="text"
-              id="updateEmail"
-              name="updateEmail"
-              value={client.email}
-              onChange={(event) =>
-                setClient({ ...client, email: event.target.value })
-              }
-            />
-            <label htmlFor="updatePhone">Phone:</label>
-            <input
-              type="text"
-              id="updatePhone"
-              name="updatePhone"
-              value={client.phone}
-              onChange={(event) =>
-                setClient({ ...client, phone: event.target.value })
-              }
-            />
-            <label htmlFor="updateCpf">CPF:</label>
-            <input
-              type="text"
-              id="updateCpf"
-              name="updateCpf"
-              value={client.cpf}
-              readOnly
-            />
-            <label htmlFor="updateCnh">CNH:</label>
-            <input
-              type="text"
-              id="updateCnh"
-              name="updateCnh"
-              value={client.cnh}
-              readOnly
-            />
-            <label htmlFor="updateIsRideshareDriver">Rideshare Driver:</label>
-            <input
-              type="checkbox"
-              id="updateIsRideshareDriver"
-              name="updateIsRideshareDriver"
-              checked={client.isRideshareDriver}
-              onChange={(event) =>
-                setClient({
-                  ...client,
-                  isRideshareDriver: event.target.checked,
-                })
-              }
-            />
+            <div>
+              <label htmlFor="updateName">Name:</label>
+              <input
+                type="text"
+                id="updateName"
+                name="updateName"
+                value={client.name}
+                onChange={(event) =>
+                  setClient({ ...client, name: event.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <label htmlFor="updateEmail">Email:</label>
+              <input
+                type="text"
+                id="updateEmail"
+                name="updateEmail"
+                value={client.email}
+                onChange={(event) =>
+                  setClient({ ...client, email: event.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="updatePhone">Phone:</label>
+              <input
+                type="text"
+                id="updatePhone"
+                name="updatePhone"
+                value={client.phone}
+                onChange={(event) =>
+                  setClient({ ...client, phone: event.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <label htmlFor="updateCpf">CPF:</label>
+              <input
+                type="text"
+                id="updateCpf"
+                name="updateCpf"
+                value={client.cpf}
+                readOnly
+              />
+            </div>
+            <div>
+              <label htmlFor="updateCnh">CNH:</label>
+              <input
+                type="text"
+                id="updateCnh"
+                name="updateCnh"
+                value={client.cnh}
+                readOnly
+              />
+            </div>
+            <div className="update-checkbox">
+              <label htmlFor="updateIsRideshareDriver">Rideshare Driver:</label>
+              <input
+                type="checkbox"
+                id="updateIsRideshareDriver"
+                name="updateIsRideshareDriver"
+                checked={client.isRideshareDriver}
+                onChange={(event) =>
+                  setClient({
+                    ...client,
+                    isRideshareDriver: event.target.checked,
+                  })
+                }
+              />
+            </div>
+
             <button type="submit">Update Client</button>
-            <button type="button" onClick={deleteClient}>
+            <button
+              type="button"
+              className="delete-button"
+              onClick={deleteClient}
+            >
               Delete Client
             </button>
             {updateValidationErrors.length > 0 && (
-              <div>
+              <div className="validation-alert">
                 <h4>Update Validation Errors:</h4>
                 <ul>
                   {updateValidationErrors.map((error, index) => (
