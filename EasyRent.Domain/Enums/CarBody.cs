@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace EasyRent.Domain.Enums;
 
-namespace EasyRent.Domain.Enums
+public enum CarBody
 {
-    internal class CarBody
-    {
-    }
+    Hatchback = 1,
+    Sedan = 2,
+    SUV = 3,
+    Pickup = 4,
+    Minivan = 5
 }

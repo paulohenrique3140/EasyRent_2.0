@@ -11,9 +11,9 @@ public class Vehicle
     public int CarYear { get; set; }
     public decimal DailyRate { get; private set; }
     public string LicensePlate { get; set; }
-    public bool IsAvailable { get; set; }
+    public bool IsAvailable { get; private set; } = true;
 
-    public Vehicle(string model, string brand, CarBody carBody, string color, int carYear, decimal dailyRate, string licensePlate, bool isAvailable)
+    public Vehicle(string model, string brand, CarBody carBody, string color, int carYear, decimal dailyRate, string licensePlate)
     {
         Model = model;
         Brand = brand;
@@ -22,7 +22,6 @@ public class Vehicle
         CarYear = carYear;
         UpdateDailyRate(dailyRate);
         LicensePlate = licensePlate;
-        IsAvailable = isAvailable;
     }
 
     public void UpdateDailyRate(decimal dailyRate)
@@ -41,5 +40,10 @@ public class Vehicle
             throw new InvalidOperationException("Vehicle ID has already been assigned.");
 
         Id = id;
+    }
+
+    public void UpdateAvailability(bool isAvailable)
+    {
+        IsAvailable = isAvailable;
     }
 }
