@@ -39,4 +39,29 @@ public class VehiclesController : ControllerBase
             return Conflict("License Plate already registered.");
         }
     }
+
+    [HttpGet]
+    public IActionResult GetAllVehicles()
+    {
+        List<Vehicle> vehicles = _vehicleRepository.GetAllVehicles();
+        List<VehicleResponseDto> responses = new List<VehicleResponseDto>();
+
+        foreach (Vehicle v in vehicles)
+        {
+            VehicleResponseDto vehicleDto = new VehicleResponseDto
+            {
+                Id = v.Id,
+                Model = v.Model,
+                Brand = v.Brand,
+                CarBody = v.CarBody,
+                Color = v.Color,
+                CarYear = v.CarYear,
+                DailyRate = v.DailyRate,
+                LicensePlate = v.LicensePlate,
+                IsAvailable = v.IsAvailable
+            };
+            responses.Add(vehicleDto);
+        }
+        return Ok(responses);
+    }
 }

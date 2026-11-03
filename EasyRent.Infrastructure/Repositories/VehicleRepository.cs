@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using EasyRent.Domain.Entities;
+using EasyRent.Domain.Enums;
 using Microsoft.Extensions.Configuration;
 
 namespace EasyRent.Infrastructure.Repositories;
@@ -35,5 +36,36 @@ public class VehicleRepository
         vehicle.SetId(id);
 
         return id;
+    }
+
+    public List<Vehicle> GetAllVehicles()
+    {
+        using SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+        List<Vehicle> vehicles = new List<Vehicle>();
+
+        string query = @"SELECT Id, Model, Brand, CarBody, Color, CarYear, DailyRate, LicensePlate, IsAvailable
+                        FROM Vehicle";
+
+        using SqlCommand command = new SqlCommand(query, connection);
+        using SqlDataReader reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            Vehicle vehicle = new Vehicle(
+                  reader["Model"].ToString(),
+                  reader["Brand"].ToString(),
+                  (CarBody)Convert.ToInt32(reader["CarBody"]),
+                  reader["Color"].ToString(),
+                  Convert.ToInt32(reader["CarYear"]),
+                  Convert.ToDecimal(reader["DailyRate"]),
+                  reader["LicensePlate"].ToString()
+                );
+            vehicle.SetId(Convert.ToInt32(reader["Id"]));
+            vehicle.UpdateAvailability(Convert.ToBoolean(reader["IsAvailable"]));
+            vehicles.Add(vehicle);
+        }
+
+        return vehicles;
     }
 }
