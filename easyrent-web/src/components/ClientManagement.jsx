@@ -167,12 +167,10 @@ function ClientManagement() {
         <h1>EasyRent 2.0</h1>
         <p>Client management</p>
       </header>
-
-      <p>Welcome to our vehicle rental system!</p>
-
+      
       <section className="form-card">
         <h3>Register new client</h3>
-        <form onSubmit={handleSubmit} className="client-form">
+        <form onSubmit={handleSubmit} className="management-form">
           <div>
             <label htmlFor="name">Full Name:</label>
             <input
@@ -252,10 +250,10 @@ function ClientManagement() {
         </div>
       )}
 
-      <section className="clients-card">
+      <section className="management-card">
         <h2>Registered Clients</h2>
         <div className="table-wrapper">
-          <table className="clients-table">
+          <table className="management-table">
             <thead>
               <tr>
                 <th>ID</th>
