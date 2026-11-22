@@ -13,4 +13,5 @@ public class VehicleResponseDto
     public decimal DailyRate { get; set; }
     public string LicensePlate { get; set; } = string.Empty;
     public bool IsAvailable { get; set; }
+    public bool IsActive { get; set; }
 }

@@ -109,12 +109,14 @@ public class ClientRepository
         return command.ExecuteNonQuery() > 0;      
     }
      
-    public bool DeleteClient(int id)
+    public bool DeactivateClient(int id)
     {
         using SqlConnection connection = new SqlConnection(connectionString);
         connection.Open();
 
-        string query = @"DELETE FROM Client WHERE Id = @Id";
+        string query = @"UPDATE Client
+                         SET IsActive = 0
+                         WHERE Id = @Id AND IsActive = 1";
 
         using SqlCommand command = new SqlCommand(query, connection);
         command.Parameters.AddWithValue("@Id", id);

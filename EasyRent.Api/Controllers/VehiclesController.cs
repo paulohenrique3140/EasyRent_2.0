@@ -58,7 +58,8 @@ public class VehiclesController : ControllerBase
                 CarYear = v.CarYear,
                 DailyRate = v.DailyRate,
                 LicensePlate = v.LicensePlate,
-                IsAvailable = v.IsAvailable
+                IsAvailable = v.IsAvailable,
+                IsActive = v.IsActive
             };
             responses.Add(vehicleDto);
         }

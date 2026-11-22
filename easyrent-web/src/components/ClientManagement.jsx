@@ -137,27 +137,27 @@ function ClientManagement() {
     }
   }
 
-  async function deleteClient() {
-    if (!window.confirm("Are you sure you want to delete this client?")) {
+  async function deactivateClient() {
+    if (!window.confirm("Are you sure you want to deactivate this client?")) {
       return;
     }
     try {
       const response = await fetch(
-        `https://localhost:7156/api/clients/${client.id}`,
+        `https://localhost:7156/api/clients/${client.id}/deactivate`,
         {
-          method: "DELETE",
+          method: "PATCH",
         },
       );
 
       if (response.ok) {
-        console.log("Client deleted successfully");
+        console.log("Client deactivated successfully");
         setClient(null);
         await getAllClients();
       } else {
-        console.log("Failed to delete client");
+        console.log("Failed to deactivate client");
       }
     } catch (error) {
-      console.error("Error deleting client:", error);
+      console.error("Error deactivating client:", error);
     }
   }
 
@@ -366,9 +366,9 @@ function ClientManagement() {
             <button
               type="button"
               className="delete-button"
-              onClick={deleteClient}
+              onClick={deactivateClient}
             >
-              Delete Client
+              Deactivate Client
             </button>
             {updateValidationErrors.length > 0 && (
               <div className="validation-alert">

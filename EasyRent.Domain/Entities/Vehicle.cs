@@ -12,6 +12,7 @@ public class Vehicle
     public decimal DailyRate { get; private set; }
     public string LicensePlate { get; set; }
     public bool IsAvailable { get; private set; } = true;
+    public bool IsActive { get; private set; } = true;
 
     public Vehicle(string model, string brand, CarBody carBody, string color, int carYear, decimal dailyRate, string licensePlate)
     {

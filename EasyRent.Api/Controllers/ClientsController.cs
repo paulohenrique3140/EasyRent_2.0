@@ -56,7 +56,8 @@ public class ClientsController : ControllerBase
                 Phone = c.Phone,
                 CPF = c.CPF,
                 CNH = c.CNH,
-                IsRideshareDriver = c.IsRideshareDriver
+                IsRideshareDriver = c.IsRideshareDriver,
+                IsActive = c.IsActive
             };
             responses.Add(clientDto);
         }        
@@ -79,7 +80,8 @@ public class ClientsController : ControllerBase
             Phone = client.Phone,
             CPF = client.CPF,
             CNH = client.CNH,
-            IsRideshareDriver = client.IsRideshareDriver
+            IsRideshareDriver = client.IsRideshareDriver,
+            IsActive = client.IsActive
         };
         return Ok(response);
     }
@@ -112,14 +114,14 @@ public class ClientsController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
-    public IActionResult DeleteClient(int id)
+    [HttpPatch("{id}/deactivate")]
+    public IActionResult DeactivateClient(int id)
     {
-        bool deleted = _clientRepository.DeleteClient(id);
+        bool deleted = _clientRepository.DeactivateClient(id);
         if (!deleted)
         {
             return NotFound();
         }
-        return Ok();
+        return NoContent();
     }
 }

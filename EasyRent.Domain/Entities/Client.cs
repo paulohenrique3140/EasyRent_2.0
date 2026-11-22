@@ -9,6 +9,7 @@ public class Client
     public string CPF { get; set; }
     public string CNH { get; set; }
     public bool IsRideshareDriver { get; set; }
+    public bool IsActive { get; private set; } = true;
 
     public Client(string name, string email, string phone, string cpf, string cnh, bool isRideshareDriver)
     {
@@ -18,5 +19,10 @@ public class Client
         CPF = cpf;
         CNH = cnh;
         IsRideshareDriver = isRideshareDriver;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
     }
 }
