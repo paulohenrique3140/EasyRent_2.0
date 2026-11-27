@@ -117,8 +117,8 @@ public class ClientsController : ControllerBase
     [HttpPatch("{id}/deactivate")]
     public IActionResult DeactivateClient(int id)
     {
-        bool deleted = _clientRepository.DeactivateClient(id);
-        if (!deleted)
+        bool deactivated = _clientRepository.DeactivateClient(id);
+        if (!deactivated)
         {
             return NotFound();
         }

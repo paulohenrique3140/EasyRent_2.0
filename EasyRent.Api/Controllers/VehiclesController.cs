@@ -65,4 +65,71 @@ public class VehiclesController : ControllerBase
         }
         return Ok(responses);
     }
+
+    [HttpGet("{id}")]
+    public IActionResult GetVehicle(int id)
+    {
+        Vehicle? vehicle = _vehicleRepository.GetVehicle(id);
+        if (vehicle == null)
+        {
+            return NotFound();
+        }
+        VehicleResponseDto response = new VehicleResponseDto
+        {
+            Id = vehicle.Id,
+            Model = vehicle.Model,
+            Brand = vehicle.Brand,
+            CarBody = vehicle.CarBody,
+            Color = vehicle.Color,
+            CarYear = vehicle.CarYear,
+            DailyRate = vehicle.DailyRate,
+            LicensePlate = vehicle.LicensePlate,
+            IsAvailable = vehicle.IsAvailable,
+            IsActive = vehicle.IsActive
+        };
+        return Ok(response);
+    }
+    [HttpPut("{id}")]
+    public IActionResult UpdateVehicle(int id, [FromBody] UpdateVehicleDto dto)
+    {
+        Vehicle? vehicle = _vehicleRepository.GetVehicle(id);
+        if(vehicle == null)
+        {
+            return NotFound();
+        }
+        vehicle.Model = dto.Model;
+        vehicle.Brand = dto.Brand;
+        vehicle.CarBody = dto.CarBody;
+        vehicle.Color = dto.Color;
+        vehicle.CarYear = dto.CarYear;
+        vehicle.UpdateDailyRate(dto.DailyRate);
+        vehicle.LicensePlate = dto.LicensePlate;
+
+        try
+        {
+            bool updated = _vehicleRepository.UpdateVehicle(vehicle);
+            if (!updated)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+        catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+        {
+            return Conflict("License Plate already registered.");
+        }
+    }
+
+    [HttpPatch("{id}/deactivate")]
+    public IActionResult DeactivateVehicle(int id)
+    {
+        bool deactivated = _vehicleRepository.DeactivateVehicle(id);
+        if (!deactivated)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+
 }

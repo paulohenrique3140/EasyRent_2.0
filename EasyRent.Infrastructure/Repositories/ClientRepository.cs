@@ -41,7 +41,7 @@ public class ClientRepository
         connection.Open();
         List<Client> clients = new List<Client>();
 
-        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver
+        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver, IsActive
                          FROM Client";
         using SqlCommand command = new SqlCommand(query, connection);
         using SqlDataReader reader = command.ExecuteReader();
@@ -56,6 +56,11 @@ public class ClientRepository
                 Convert.ToBoolean(reader["IsRideshareDriver"])
                 );
             client.Id = Convert.ToInt32(reader["Id"]);
+            bool isActive = Convert.ToBoolean(reader["IsActive"]);
+            if (!isActive)
+            {
+                client.Deactivate();
+            }
             clients.Add(client);
         }
 
@@ -66,7 +71,7 @@ public class ClientRepository
         using SqlConnection connection = new SqlConnection(connectionString);
         connection.Open();
 
-        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver
+        string query = @"SELECT Id, Name, Email, Phone, CPF, CNH, IsRideshareDriver, IsActive
                         FROM Client WHERE Id = @Id";
 
         using SqlCommand command = new SqlCommand(query, connection);
@@ -83,6 +88,11 @@ public class ClientRepository
                 Convert.ToBoolean(reader["IsRideshareDriver"])
                 );
             client.Id = Convert.ToInt32(reader["Id"]);
+            bool isActive = Convert.ToBoolean(reader["IsActive"]);
+            if (!isActive)
+            {
+                client.Deactivate();
+            }
             return client;
         }
         return null;        

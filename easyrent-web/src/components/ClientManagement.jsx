@@ -157,7 +157,7 @@ function ClientManagement() {
         console.log("Failed to deactivate client");
       }
     } catch (error) {
-      console.error("Error deactivating client:", error);
+      console.error("Error deactivating client: ", error);
     }
   }
 

@@ -3,7 +3,7 @@ namespace EasyRent.Domain.Entities;
 
 public class Vehicle
 {
-    public int Id { get; private set; }
+    public int Id { get; set; }
     public string Model { get; set; }
     public string Brand { get; set; }
     public CarBody CarBody { get; set; }
@@ -46,5 +46,10 @@ public class Vehicle
     public void UpdateAvailability(bool isAvailable)
     {
         IsAvailable = isAvailable;
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
     }
 }
