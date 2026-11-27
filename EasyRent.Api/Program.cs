@@ -23,6 +23,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<ClientRepository>();
 
+builder.Services.AddScoped<VehicleRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

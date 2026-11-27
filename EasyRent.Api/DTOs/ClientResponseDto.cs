@@ -9,4 +9,5 @@ public class ClientResponseDto
     public string CPF { get; set; } = string.Empty;
     public string CNH { get; set; } = string.Empty;
     public bool IsRideshareDriver { get; set; }
+    public bool IsActive { get; set; }
 }
