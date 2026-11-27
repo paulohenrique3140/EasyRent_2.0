@@ -55,13 +55,13 @@ public class VehicleRepository
         while (reader.Read())
         {
             Vehicle vehicle = new Vehicle(
-                  reader["Model"].ToString(),
-                  reader["Brand"].ToString(),
+                  reader.GetString(reader.GetOrdinal("Model")),
+                  reader.GetString(reader.GetOrdinal("Brand")),
                   (CarBody)Convert.ToInt32(reader["CarBody"]),
-                  reader["Color"].ToString(),
+                  reader.GetString(reader.GetOrdinal("Color")),
                   Convert.ToInt32(reader["CarYear"]),
                   Convert.ToDecimal(reader["DailyRate"]),
-                  reader["LicensePlate"].ToString()
+                  reader.GetString(reader.GetOrdinal("LicensePlate"))
                 );
             vehicle.SetId(Convert.ToInt32(reader["Id"]));
             vehicle.UpdateAvailability(Convert.ToBoolean(reader["IsAvailable"]));
